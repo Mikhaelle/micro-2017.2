@@ -5,12 +5,12 @@
 2. O que são sistemas microprocesssados?
 
 3. Apresente aplicações de sistemas embarcados:
--(a) Para a indústria automotiva;
--Controle de acionamento para sistemas airbag.
--(b) Para eletrodomésticos;
--Controle de máquinas de lavar, como por exemplo, nível d'agua, tempo de centrifugação,etc...
--(c) Para automação industrial.
--Controle de esteiras por exemplo em uma industria automobilistica.
+(a) Para a indústria automotiva;
+Controle de acionamento para sistemas airbag.
+(b) Para eletrodomésticos;
+Controle de máquinas de lavar, como por exemplo, nível d'agua, tempo de centrifugação,etc...
+(c) Para automação industrial.
+Controle de esteiras por exemplo em uma industria automobilistica.
 
 4. Cite arquiteturas possíveis e as diferenças entre elas.
 
