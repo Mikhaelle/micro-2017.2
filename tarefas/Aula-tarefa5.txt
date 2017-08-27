@@ -1,0 +1,111 @@
+Mikhaelle de Carvalho Bueno 	15/0018673
+Para as questões 2 a 5, considere que as variáveis `f`, `g`, `h`, `i` e `j` são do tipo inteiro (16 bits na arquitetura do MSP430), e que o vetor `A[]` é do tipo inteiro. Estas variáveis estão armazenadas nos seguintes registradores:
+	f: R4
+	g: R5
+	h: R6
+	i: R7
+	j: R8
+	A: R9
+Utilize os registradores R11, R12, R13, R14 e R15 para armazenar valores temporários.
+
+1. Escreva os trechos de código assembly do MSP430 para:
+	(a) Somente setar o bit menos significativo de R5.
+	move.w #1,R11
+	and.w R11,R5
+
+	(b) Somente setar dois bits de R6: o menos significativo e o segundo menos significativo.
+	Move.w #3, R11
+	and.w R11,R6
+
+	(c) Somente zerar o terceiro bit menos significativo de R7.
+	Move.w #4,R11
+	and.w R11,R7
+
+	(d) Somente zerar o terceiro e o quarto bits menos significativo de R8.
+	Move.w #10, R11
+	and.w R11,R8
+
+	(e) Somente inverter o bit mais significativo de R9.
+	Move.w #0x128, R11
+	add R11,R9
+
+	(f) Inverter o nibble mais significativo de R10, e setar o nibble menos significativo de R10. 
+	Move.b #0x15, R10
+	and.w #x15, R10
+
+2. "Traduza" o seguinte trecho de código em C para o assembly do MSP430:
+
+```C
+	comp R7, R8
+	jl maior  ; j<i
+	jeq maior ; j=i
+	sub.w R5, R6
+	sub.w #0x10, R6
+	move.w R6, R4
+	jmp exit
+maior:
+	add.w R5 ,R6
+	add.w #0x10, R6
+	move.w R6,R4
+exit:
+
+```
+
+
+3. "Traduza" o seguinte trecho de código em C para o assembly do MSP430:
+
+```C
+LOOP:
+	mov.w R7 ,R11	 ; move o valor de r7 pra r11
+	mov.w R7, R12	 ; move o valor de r7 para r12
+	rla R12 		; multiplica r12*2
+	add.w R11,R12	
+	comp 0(R12), k
+	jne EXIT  		;save[i] != k
+	inc.w R7		; i++
+	jmp LOOP
+EXIT:
+
+```
+
+
+4. "Traduza" o seguinte trecho de código em C para o assembly do MSP430:
+
+```C
+for(i=0; i<100; i++) A[i] = i*2;
+
+LOOP
+	move.w #0x0, i
+	move.w #0x100, R11		; R11=100
+	comp R11,i     			; Comprar i com R11
+	jl MULT			; se i<100
+	jmp EXIT
+MULT:
+	move.w i(R9), R12		; move R9 para R12
+	rla R12			; R12*2
+	add.w R12, i(R9)		; R9 = R12
+	inc.w i				; i++
+	jmp LOOP
+EXIT
+```
+
+
+5. "Traduza" o seguinte trecho de código em C para o assembly do MSP430:
+
+```C
+for(i=99; i>=0; i--) A[i] = i*2;
+
+LOOP
+	move.w #0x99, i
+	move.w #0x0, R11
+	comp R11,i
+	jge MULT
+	jmp EXIT
+MULT:
+	move.w i(R9), R12		; move R9 para R12
+	rla R12			; R12*2
+	add.w R12, i(R9)		; R9 = R12
+	dec.w i				; i--
+	jmp LOOP
+EXIT;
+```
