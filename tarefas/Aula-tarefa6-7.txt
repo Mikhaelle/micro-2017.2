@@ -42,9 +42,9 @@ Raiz_quadrada:
 divisao:
     push.w R1   ; guarda valor de r1 na pilha
     push.w R2   ; guarda valor de r2 na pilha
-    comp R2,R1   ; testar se r14 < r15
+    comp R2,R1   ; testar se r2 < r1
     jge verdadeiro  ; se r15 >= r14 pula verdadeiro
-    mov.w R2,R15
+    mov.w R3,R15
     pop.w R2    ;puxa valor de r1 na pilha
     pop.w R1    ; puxa valor de r2 na pilha
     ret 
