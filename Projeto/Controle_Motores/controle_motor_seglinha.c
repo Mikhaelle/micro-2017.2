@@ -3,6 +3,14 @@
 		//MOTOR1 - ESQUERDA
 		//MOTOR2 - DIREITA
 		
+const int MOTOR1 = P1_1;
+const int MOTOR2 = P1_2;
+
+void setup() {                
+  pinMode(MOTOR1, OUTPUT); 
+  pinMode(MOTOR2, OUTPUT);
+}
+		
 void controle_motor(void){
         
 		if  (LDR1= 1 && LDR2 =0 && LDR3= 1 ){ 
