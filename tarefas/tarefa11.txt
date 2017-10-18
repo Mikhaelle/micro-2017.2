@@ -6,86 +6,86 @@ void Atraso(volatile unsigned int x){
   BCSCTL1 = CALBC1_1MHZ;    //MCLK e SMCLK @ 1MHz
   DCOCTL = CALDCO_1MHZ;   //MCLK e SMCLK @ 1MHz
   TA0CCR0 = x-1;
-  TA0CTL = TASSEL_2 + ID_3 + MC_1;
+  TA0CTL = TASSEL_2 + ID_0 + MC_1+TAIE;
+   BIS_SR(LPM0_bits+GIE);
+    return 0;
 }
 
 2)Pisque os LEDs da Launchpad numa frequência de 100 Hz.
 
 1Mhz/x =100 , x=10000
  
-#include <msp430g2553.h>
-#define LED BIT0
-
 int main(void)
 {
-	WDTCTL = WDTPW + WDTHOLD;	// Stop WDT
-	
-	BCSCTL1 = CALBC1_1MHZ;		//MCLK e SMCLK @ 1MHz
-	DCOCTL = CALDCO_1MHZ;		//MCLK e SMCLK @ 1MHz
-	P1OUT &= ~LED;
-	P1DIR |= LED;
-	TA0CCR0 = 10000-1;             // 1microseg*10000 =0,01s = 100Hz
-	TA0CTL = TASSEL_2 + ID_3 + MC_1;
-	while(1)
-	{
-		while((TA0CTL & TAIFG)==0);
-		P1OUT ^= LED;
-		TA0CTL &= ~TAIFG;
-	}
-	return 0;
+    WDTCTL = WDTPW + WDTHOLD;   // Stop WDT
+
+    BCSCTL1 = CALBC1_1MHZ;      //MCLK e SMCLK @ 1MHz
+    DCOCTL = CALDCO_1MHZ;       //MCLK e SMCLK @ 1MHz
+    P1OUT &= ~(LED1+LED2);
+    P1DIR |= LED1 + LED2;
+    TA0CCR0 = 5000-1;
+    TA0CTL = TASSEL_2 + ID_0 + MC_1 + TAIE;
+    _BIS_SR(LPM0_bits+GIE);
+    return 0;
 }
+
+#pragma vector = TIMER0_A1_VECTOR
+__interrupt void TIMER0_TA0_ISR(void)
+{
+    P1OUT ^= LED1 + LED2;
+    TA0CTL &= ~TAIFG;
+}
+
 
 3)Pisque os LEDs da Launchpad numa frequência de 20 Hz.
 
 1Mhz/20 =x
 x= 50000
 
-#include <msp430g2553.h>
-#define LED BIT0
-
 int main(void)
 {
-	WDTCTL = WDTPW + WDTHOLD;	// Stop WDT
-	
-	BCSCTL1 = CALBC1_1MHZ;		//MCLK e SMCLK @ 1MHz
-	DCOCTL = CALDCO_1MHZ;		//MCLK e SMCLK @ 1MHz
-	P1OUT &= ~LED;
-	P1DIR |= LED;
-	TA0CCR0 = 50000-1;              // 1microseg*50000 =  0,05s = 20Hz
-	TA0CTL = TASSEL_2 + ID_3 + MC_1;
-	while(1)
-	{
-		while((TA0CTL & TAIFG)==0);
-		P1OUT ^= LED;
-		TA0CTL &= ~TAIFG;
-	}
-	return 0;
+    WDTCTL = WDTPW + WDTHOLD;   // Stop WDT
+
+    BCSCTL1 = CALBC1_1MHZ;      //MCLK e SMCLK @ 1MHz
+    DCOCTL = CALDCO_1MHZ;       //MCLK e SMCLK @ 1MHz
+    P1OUT &= ~(LED1+LED2);
+    P1DIR |= LED1 + LED2;
+    TA0CCR0 = 2500-1;
+    TA0CTL = TASSEL_2 + ID_0 + MC_1 + TAIE;
+    _BIS_SR(LPM0_bits+GIE);
+    return 0;
+}
+
+#pragma vector = TIMER0_A1_VECTOR
+__interrupt void TIMER0_TA0_ISR(void)
+{
+    P1OUT ^= LED1 + LED2;
+    TA0CTL &= ~TAIFG;
 }
 
 4)Pisque os LEDs da Launchpad numa frequência de 1 Hz.
-1Mhz/1 =x
-x=1000000
-
-#include <msp430g2553.h>
-#define LED BIT0
+1Mhz/8 =x
+x=125000
 
 int main(void)
 {
-	WDTCTL = WDTPW + WDTHOLD;	// Stop WDT
-	
-	BCSCTL1 = CALBC1_1MHZ;		//MCLK e SMCLK @ 1MHz
-	DCOCTL = CALDCO_1MHZ;		//MCLK e SMCLK @ 1MHz
-	P1OUT &= ~LED;
-	P1DIR |= LED;
-	TA0CCR0 = 1000000-1;              // 1microseg*1000000 =  1s = 1Hz
-	TA0CTL = TASSEL_2 + ID_3 + MC_1;
-	while(1)
-	{
-		while((TA0CTL & TAIFG)==0);
-		P1OUT ^= LED;
-		TA0CTL &= ~TAIFG;
-	}
-	return 0;
+    WDTCTL = WDTPW + WDTHOLD;   // Stop WDT
+
+    BCSCTL1 = CALBC1_1MHZ;      //MCLK e SMCLK @ 1MHz
+    DCOCTL = CALDCO_1MHZ;       //MCLK e SMCLK @ 1MHz
+    P1OUT &= ~(LED1+LED2);
+    P1DIR |= LED1 + LED2;
+    TA0CCR0 = 62500-1;
+    TA0CTL = TASSEL_2 + ID_3 + MC_1 + TAIE;
+    _BIS_SR(LPM0_bits+GIE);
+    return 0;
+}
+
+#pragma vector = TIMER0_A1_VECTOR
+__interrupt void TIMER0_TA0_ISR(void)
+{
+    P1OUT ^= LED1 + LED2;
+    TA0CTL &= ~TAIFG;
 }
 
 5)Pisque os LEDs da Launchpad numa frequência de 0,5 Hz.
@@ -93,26 +93,25 @@ int main(void)
 x=2000000
 
 
-#include <msp430g2553.h>
-#define LED BIT0
-
 int main(void)
 {
-	WDTCTL = WDTPW + WDTHOLD;	// Stop WDT
-	
-	BCSCTL1 = CALBC1_1MHZ;		//MCLK e SMCLK @ 1MHz
-	DCOCTL = CALDCO_1MHZ;		//MCLK e SMCLK @ 1MHz
-	P1OUT &= ~LED;
-	P1DIR |= LED;
-	TA0CCR0 = 2000000-1;              // 1microseg*2000000 =  2s = 0.5Hz
-	TA0CTL = TASSEL_2 + ID_3 + MC_1;
-	while(1)
-	{
-		while((TA0CTL & TAIFG)==0);
-		P1OUT ^= LED;
-		TA0CTL &= ~TAIFG;
-	}
-	return 0;
+    WDTCTL = WDTPW + WDTHOLD;   // Stop WDT
+
+    BCSCTL1 = CALBC1_1MHZ;      //MCLK e SMCLK @ 1MHz
+    DCOCTL = CALDCO_1MHZ;       //MCLK e SMCLK @ 1MHz
+    P1OUT &= ~(LED1+LED2);
+    P1DIR |= LED1 + LED2;
+    TA0CCR0 = 62500-1;
+    TA0CTL = TASSEL_2 + ID_3 + MC_3 + TAIE;
+    _BIS_SR(LPM0_bits+GIE);
+    return 0;
+}
+
+#pragma vector = TIMER0_A1_VECTOR
+__interrupt void TIMER0_TA0_ISR(void)
+{
+    P1OUT ^= LED1 + LED2;
+    TA0CTL &= ~TAIFG;
 }
 
 6)Repita as questões 2 a 5 usando a interrupção do Timer A para acender ou apagar os LEDs.
