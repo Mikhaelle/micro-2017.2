@@ -9,7 +9,7 @@
 
 int main()
 {
-  float i=1; // i = luminosidade natural do local
+  float i=1.9; // i = luminosidade natural do local
   float j=1.9;
   float Valorlido_LDR1, Valorlido_LDR2, Valorlido_LDR3;
   WDTCTL = WDTPW | WDTHOLD;

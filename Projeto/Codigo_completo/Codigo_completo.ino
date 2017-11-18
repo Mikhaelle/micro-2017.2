@@ -1,4 +1,4 @@
-//leds testado
+//leds e LDRS testados e funcionando
 #include <msp430g2553.h>
 #define LDR1 BIT1 // entradas P1
 #define LDR2 BIT2
@@ -12,9 +12,11 @@
 #define LED2 BIT4
 #define LEDS (LED1|LED2)
 
+//#define LED3 BIT6; led de teste para o LDR
+
 int main ()
 {
-    float i=1; // i = luminosidade natural do local, varia de tipos de LDR
+    float i=1.9; // i = luminosidade natural do local, varia de tipos de LDR
     float j=1.9;
     int Valorlido_LDR1;
     int Valorlido_LDR2;
@@ -42,6 +44,10 @@ int main ()
    P1OUT |= LEDS; // led é saida
    P1DIR |= LEDS; // 
 
+//----leds de texte para o ldr---
+  // P1OUT |= LED3;
+  // P1DIR |= LED3;
+
    //configuração das portas
    P2SEL  &= ~EN_R;                
    P2SEL2 &= ~EN_R;                
@@ -60,23 +66,27 @@ int main ()
           Valorlido_LDR2=P1IN&LDR2;// vai receber o valor lido do ldr2
           P1OUT ^=LEDS;  //leds sempre acesso
 
-    if (Valorlido_LDR1<=j && Valorlido_LDR2<=i){ // os dois na linha preta -- motores param
-        P2OUT &= ~EN_R;// desliga motor direito
+    if (Valorlido_LDR1<=j && Valorlido_LDR2<=i) // os dois na linha preta -- motores param
+       { P2OUT &= ~EN_R;// desliga motor direito
         P2OUT &= ~EN_L; // desliga motor esquerdo
+       // P1OUT ^= LED3;
        
       }
-    else if (Valorlido_LDR1>j && Valorlido_LDR2>i){ // os dois fora da linha preta -- motores ligam
-        P2OUT |= EN_R;
+    else if (Valorlido_LDR1>j && Valorlido_LDR2>i) // os dois fora da linha preta -- motores ligam
+        {P2OUT |= EN_R;
         P2OUT |= EN_L;
+      //P1OUT &= ~LED3;
       }
-     else if (Valorlido_LDR1<=j &&Valorlido_LDR2>i){ // motor esquerdo liga, motor direito desliga
-      P2OUT |= EN_R;
-      P2OUT &= ~EN_L;
-     }
+    else if (Valorlido_LDR1<=j &&Valorlido_LDR2>i){ // motor esquerdo liga, motor direito desliga
+    P2OUT |= EN_R;
+    P2OUT &= ~EN_L;
+    //P1OUT &= ~LED3;
+    }
 
      else if (Valorlido_LDR1>j &&Valorlido_LDR2<=i){ // motor esquerdo desliga, motor direito liga
-      P2OUT &= ~EN_R;
-      P2OUT |= EN_L;
+     P2OUT &= ~EN_R;
+     P2OUT |= EN_L;
+     //P1OUT &= ~LED3;
      }
      
   }
