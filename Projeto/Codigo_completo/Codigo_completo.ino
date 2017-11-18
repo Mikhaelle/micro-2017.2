@@ -1,3 +1,4 @@
+//leds testado
 #include <msp430g2553.h>
 #define LDR1 BIT1 // entradas P1
 #define LDR2 BIT2
@@ -11,10 +12,12 @@
 #define LED2 BIT4
 #define LEDS (LED1|LED2)
 
-void main (void)
+int main ()
 {
     float i=1; // i = luminosidade natural do local, varia de tipos de LDR
     float j=1.9;
+    int Valorlido_LDR1;
+    int Valorlido_LDR2;
   
     WDTCTL = WDTPW | WDTHOLD; // stop the WDT
 
@@ -73,7 +76,7 @@ void main (void)
 
      else if (Valorlido_LDR1>j &&Valorlido_LDR2<=i){ // motor esquerdo desliga, motor direito liga
       P2OUT &= ~EN_R;
-      P2OUT |= EN_L
+      P2OUT |= EN_L;
      }
      
   }
